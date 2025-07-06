@@ -41,3 +41,4 @@ export interface CodeSuggestion {
   content: string;
   explanation: string;
 }
+

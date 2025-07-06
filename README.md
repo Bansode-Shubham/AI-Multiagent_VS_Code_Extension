@@ -1,244 +1,165 @@
-Multi-Agent AI VS Code Extension
-A powerful AI-powered coding assistant that brings multiple specialized AI agents directly into your VS Code workflow. Get intelligent code completion, security analysis, and automated documentation generation - all powered by cutting-edge AI models.
-🚀 Features
-🤖 Multiple AI Agents
+# Multi-Agent Developer Tools
+
+AI-powered coding, security, and documentation assistant with multiple specialized agents for VS Code.
+
+## Features
+
+### 🤖 Smart Code Enhancement
+- **Inline completions** - Auto-suggestions as you type
+- **Code improvement suggestions** - Analyzes and enhances selected code
+- **Context-aware generation** - Understands your codebase
+- **Multi-language support** - Works with all major programming languages
+- **Intelligent completion triggers** - Activates on `.`, `(`, `[`, `{`, etc.
+
+### 🔒 Security Analysis
+- **Vulnerability detection** - Identifies security issues in your code
+- **Real-time diagnostics** - Shows issues directly in the editor
+- **Severity classification** - Categorizes issues by risk level
+- **Actionable suggestions** - Provides specific fix recommendations
+
+### 📚 Documentation Generation
+- **Auto-generate docs** - Creates comprehensive documentation
+- **Multiple insertion options** - Insert above, below, or copy to clipboard
+- **Language-specific formatting** - Adapts to your programming language
+- **Context-aware content** - Understands code structure and purpose
+
+## Installation
+
+1. Install the extension from VS Code marketplace
+2. Configure your API keys in VS Code settings:
+   - `multiAgentAI.groqApiKey` - Your Groq API key
+   - `multiAgentAI.blackboxApiKey` - Your Blackbox API key
+
+## Usage
+
+### Commands
+
+| Command | Shortcut | Description |
+|---------|----------|-------------|
+| **AI: Generate Code** | `Ctrl+Shift+G` | Generate or improve code based on selection |
+| **AI: Analyze Security** | `Ctrl+Shift+S` | Analyze code for security vulnerabilities |
+| **AI: Generate Documentation** | `Ctrl+Shift+D` | Generate documentation for selected code |
+| **AI: Open Agent Panel** | - | Open the AI assistant panel |
+| **AI: Accept Inline Suggestion** | `Ctrl+Shift+A` | Accept the current inline suggestion |
+
+### Inline Completions
+
+The extension provides intelligent code completions as you type:
+
+- Activates when you type 3+ characters
+- Uses surrounding context for better suggestions
+- Supports all file types
+- Configurable trigger characters
+
+### Agent Panel
+
+Access the AI assistant panel via:
+- Command palette: `AI: Open Agent Panel`
+- Status bar: Click the robot icon
+- Right-click context menu
+
+## Configuration
+
+### Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `multiAgentAI.groqApiKey` | `""` | Groq API Key for AI services |
+| `multiAgentAI.blackboxApiKey` | `""` | Blackbox API Key for DeepSeek R1 |
+| `multiAgentAI.inlineCompletions` | `true` | Enable inline code completions |
+| `multiAgentAI.completionTriggers` | `[".", "(", "[", "{", " ", ":", "=", "<", "/"]` | Characters that trigger completion |
+| `multiAgentAI.autoSuggestDelay` | `500` | Delay before showing suggestions (ms) |
+| `multiAgentAI.maxContextLines` | `10` | Max lines used for context |
+
+### API Keys Setup
+
+1. Open VS Code settings (`Ctrl+,`)
+2. Search for "Multi-Agent AI"
+3. Enter your API keys:
+   - **Groq API Key**: Get from [Groq Console](https://console.groq.com/)
+   - **Blackbox API Key**: Get from [Blackbox AI](https://blackbox.ai/)
+
+## Examples
+
+### Code Generation
+```typescript
+// Type a comment and get instant code
+// TODO: Create a function to validate email
+// → AI generates the complete function
+```
+
+### Security Analysis
+```javascript
+// Detects issues like:
+eval(userInput); // ⚠️ HIGH: Code injection vulnerability
+document.write(data); // ⚠️ MEDIUM: XSS vulnerability
+```
+
+### Documentation
+```python
+def complex_algorithm(data, threshold=0.5):
+    # Select code and generate docs
+    # → AI creates comprehensive documentation
+```
 
-Coding Agent: Intelligent code completion, improvements, and optimizations
-Security Agent: Static code analysis and vulnerability detection
-Documentation Agent: Automated documentation generation and error resolution guides
+## Supported Languages
 
-🔧 AI Models
+- JavaScript/TypeScript
+- Python
+- Java
+- C/C++
+- Go
+- Rust
+- PHP
+- Ruby
+- And many more...
 
-Groq: Lightning-fast inference with Llama 3.1 models
-DeepSeek R1: Advanced reasoning capabilities via Blackbox AI
+## Troubleshooting
 
-⚡ Key Capabilities
+### Common Issues
 
-Real-time code completion and suggestions
-Security vulnerability scanning
-Automated documentation generation
-Error resolution guidance
-Performance optimization suggestions
-Multi-language support
+**No suggestions appearing?**
+- Check API keys are configured
+- Ensure you're typing 3+ characters
+- Verify file is saved with correct extension
 
-📦 Installation
-Prerequisites
+**Security analysis not working?**
+- Confirm Groq API key is valid
+- Check file contains actual code (not just comments)
+- Try refreshing the window
 
-VS Code 1.74.0 or higher
-Node.js 16.x or higher
-npm or yarn
+**Documentation generation fails?**
+- Select actual code (not whitespace)
+- Ensure API keys are properly configured
+- Check network connectivity
 
-Quick Install
+## Privacy & Security
 
-Download the extension:
-bash# Clone or download the extension files
-git clone <repository-url>
-cd multi-agent-ai
+- Code is sent to AI providers for processing
+- No code is stored permanently
+- API keys are stored locally in VS Code
+- All communication uses HTTPS
 
-Install dependencies:
-bashnpm install
+## Support
 
-Compile the extension:
-bashnpm run compile
+- **Issues**: Report on GitHub
+- **Feature requests**: Open an issue
+- **Documentation**: Check VS Code command palette
 
-Package the extension:
-bashnpm install -g vsce
-vsce package
+## Requirements
 
-Install in VS Code:
+- VS Code 1.101.0 or higher
+- Valid API keys from Groq and Blackbox
+- Internet connection for AI services
 
-Open VS Code
-Go to Extensions (Ctrl+Shift+X)
-Click "..." → "Install from VSIX..."
-Select the generated .vsix file
+## Release Notes
 
+### 0.0.12
+- Enhanced inline completions
+- Improved security analysis
+- Better documentation generation
+- Added configurable settings
 
+---
 
-⚙️ Configuration
-API Keys Setup
-
-Get your API keys:
-
-Groq API: Visit console.groq.com and create an API key
-Blackbox API: Visit blackbox.ai and get your API key
-
-
-Configure in VS Code:
-
-Open Settings (Ctrl+,)
-Search for "Multi-Agent AI"
-Enter your API keys:
-
-Multi-Agent AI: Groq Api Key
-Multi-Agent AI: Blackbox Api Key
-
-
-
-
-
-🎮 Usage
-Keyboard Shortcuts
-
-Ctrl+Shift+G - Generate code completion/improvement
-Ctrl+Shift+S - Analyze security vulnerabilities
-Ctrl+Shift+D - Generate documentation
-Ctrl+Shift+P → "AI:" - Access all AI commands
-
-Command Palette
-Open Command Palette (Ctrl+Shift+P) and search for:
-
-AI: Generate Code - Get intelligent code suggestions
-AI: Analyze Security - Scan for security issues
-AI: Generate Documentation - Create comprehensive docs
-AI: Open Agent Panel - View AI assistant panel
-
-Auto-completion
-
-Type code and press . to trigger AI-powered completions
-Get context-aware suggestions based on your current code
-
-🔍 Features in Detail
-Coding Agent
-
-Smart Completions: Context-aware code suggestions
-Code Improvements: Refactoring and optimization recommendations
-Best Practices: Follows language-specific coding standards
-Performance Tips: Identifies optimization opportunities
-
-Security Agent
-
-Vulnerability Detection: Identifies common security issues
-Dependency Scanning: Checks for known vulnerabilities in packages
-Security Fixes: Provides specific remediation suggestions
-Compliance Checks: Ensures code follows security best practices
-
-Documentation Agent
-
-Function Documentation: Generates comprehensive function docs
-API Documentation: Creates detailed API reference guides
-Error Resolution: Provides troubleshooting guides for errors
-Code Comments: Adds meaningful inline documentation
-
-📸 Screenshots
-AI Agent Panel
-┌─────────────────────────────────────────┐
-│ Multi-Agent AI Assistant               │
-├─────────────────────────────────────────┤
-│ [Coding] [Security] [Documentation]     │
-├─────────────────────────────────────────┤
-│                                         │
-│ 🤖 Coding Agent                        │
-│ AI-powered code completion and          │
-│ suggestions                             │
-│                                         │
-│ Generated code suggestions appear here  │
-│                                         │
-└─────────────────────────────────────────┘
-Security Analysis
-🔒 Security Issues Found:
-❌ HIGH - SQL Injection vulnerability on line 42
-⚠️  MEDIUM - Hardcoded API key detected on line 15
-ℹ️  LOW - Missing input validation on line 28
-🛠️ Development
-Building from Source
-
-Clone the repository:
-bashgit clone <repository-url>
-cd multi-agent-ai
-
-Install dependencies:
-bashnpm install
-
-Start development:
-bashnpm run watch
-
-Debug:
-
-Press F5 in VS Code to launch Extension Development Host
-Test your changes in the new VS Code window
-
-
-
-Project Structure
-multi-agent-ai/
-├── src/
-│   ├── extension.ts          # Main extension entry point
-│   ├── types.ts              # TypeScript type definitions
-│   ├── services/
-│   │   └── aiService.ts      # AI service integration
-│   ├── agents/
-│   │   ├── codingAgent.ts    # Code generation agent
-│   │   ├── securityAgent.ts  # Security analysis agent
-│   │   └── documentationAgent.ts # Documentation agent
-│   └── ui/
-│       └── agentPanel.ts     # Web panel UI
-├── package.json              # Extension manifest
-├── tsconfig.json             # TypeScript configuration
-└── README.md                 # This file
-🔧 Troubleshooting
-Common Issues
-Extension not loading
-
-Check VS Code version (requires 1.74.0+)
-Verify extension is enabled in Extensions panel
-Check Developer Console for errors (Help → Toggle Developer Tools)
-
-API errors
-
-Verify API keys are correctly configured
-Check API key permissions and credits
-Ensure internet connection is stable
-
-TypeScript compilation errors
-
-Run npm install to ensure all dependencies are installed
-Check Node.js version (requires 16.x+)
-Verify tsconfig.json is properly configured
-
-No AI responses
-
-Confirm API keys are valid and have credits
-Check network connectivity
-Review VS Code Output panel for error messages
-
-📋 Requirements
-System Requirements
-
-VS Code 1.74.0 or higher
-Node.js 16.x or higher
-Internet connection for AI API calls
-
-API Requirements
-
-Valid Groq API key with credits
-Valid Blackbox API key with credits
-
-🤝 Contributing
-We welcome contributions! Please:
-
-Fork the repository
-Create a feature branch
-Make your changes
-Add tests if applicable
-Submit a pull request
-
-Development Guidelines
-
-Follow TypeScript best practices
-Add appropriate error handling
-Update documentation for new features
-Test thoroughly before submitting
-
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-🆘 Support
-Having issues? Here's how to get help:
-
-Check the troubleshooting section above
-Search existing issues on GitHub
-Create a new issue with detailed information:
-
-VS Code version
-Extension version
-Error messages
-Steps to reproduce
+**Enjoy coding with AI assistance!** 🚀
