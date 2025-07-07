@@ -269,6 +269,8 @@ export class AIService {
       "mixtral-8x7b-32768"
     ];
   }
+  
+  
 
   formatMessagesForContext(messages: ChatMessage[], maxLength: number = 4000): ChatMessage[] {
     const formatted = [...messages];
@@ -281,6 +283,8 @@ export class AIService {
     
     return formatted;
   }
+
+  
 
   estimateTokens(text: string): number {
     // Rough estimation: ~4 characters per token
