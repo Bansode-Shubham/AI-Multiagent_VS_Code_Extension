@@ -30,8 +30,6 @@ export declare class AgentPanel {
     updateContent(agent: string, content: string, type?: 'success' | 'error' | 'warning' | 'info'): void;
     updateProgress(agent: string, progress: number, status: string): void;
     updateBadge(agent: string, count: number, type?: 'success' | 'error' | 'warning' | 'info'): void;
-    private refreshAgent;
-    private clearAgent;
     private exportContent;
     private cleanup;
     dispose(): void;

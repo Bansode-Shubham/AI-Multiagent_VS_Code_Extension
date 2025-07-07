@@ -37,7 +37,7 @@ export interface SecurityIssue {
 }
 
 export interface CodeSuggestion {
-  type: 'completion' | 'improvement' | 'optimization';
+  type: 'completion' | 'improvement' | 'optimization' | 'explanation';
   content: string;
   explanation: string;
 }

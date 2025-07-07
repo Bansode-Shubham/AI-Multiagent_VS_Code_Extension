@@ -154,7 +154,7 @@ def complex_algorithm(data, threshold=0.5):
 
 ## Release Notes
 
-### 0.0.12
+### 0.0.17
 - Enhanced inline completions
 - Improved security analysis
 - Better documentation generation

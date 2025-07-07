@@ -120,20 +120,124 @@ Include edge cases, error scenarios, and proper test structure.`;
             explanation: `Unit tests generated using ${framework}`
         };
     }
-    async explainCode(code, language, level = 'intermediate') {
+    async explainCode(code, language, level = 'intermediate', options = {}) {
         this.validateLanguage(language);
-        const systemPrompt = `Explain the provided ${language} code for a ${level} developer.
-${level === 'beginner' ? 'Use simple language and explain basic concepts.' : ''}
-${level === 'advanced' ? 'Focus on advanced patterns, optimizations, and architectural decisions.' : ''}
-Break down complex parts and explain the overall logic flow.`;
+        const cacheKey = this.getCacheKey('explanation', code, language, `${level}-${JSON.stringify(options)}`);
+        if (this.cache.has(cacheKey)) {
+            return this.cache.get(cacheKey).content;
+        }
+        const systemPrompt = this.buildExplanationPrompt(language, level, options);
         const messages = [
             { role: 'system', content: systemPrompt },
             {
                 role: 'user',
-                content: `Explain this ${language} code:\n\`\`\`${language}\n${code}\n\`\`\`\n\nTarget audience: ${level}`
+                content: this.buildExplanationUserPrompt(code, language, level, options)
+            }
+        ];
+        const response = await this.aiService.chatWithGroq(messages);
+        // Cache the explanation
+        this.cache.set(cacheKey, {
+            type: 'explanation',
+            content: response,
+            explanation: `Code explanation for ${level} level`
+        });
+        return response;
+    }
+    async explainCodeSection(code, language, startLine, endLine, level = 'intermediate') {
+        this.validateLanguage(language);
+        const lines = code.split('\n');
+        const section = lines.slice(startLine - 1, endLine).join('\n');
+        const systemPrompt = `Explain the specific section of ${language} code for a ${level} developer.
+Focus on this particular code section and its role in the overall context.
+${level === 'beginner' ? 'Use simple language and explain basic concepts.' : ''}
+${level === 'advanced' ? 'Focus on advanced patterns and implementation details.' : ''}`;
+        const messages = [
+            { role: 'system', content: systemPrompt },
+            {
+                role: 'user',
+                content: `Full code context:\n\`\`\`${language}\n${code}\n\`\`\`\n\nExplain lines ${startLine}-${endLine}:\n\`\`\`${language}\n${section}\n\`\`\`\n\nTarget audience: ${level}`
             }
         ];
         return await this.aiService.chatWithGroq(messages);
+    }
+    async explainCodePattern(code, language, patternName, level = 'intermediate') {
+        this.validateLanguage(language);
+        const systemPrompt = `Explain the ${patternName} pattern as implemented in the provided ${language} code.
+Target audience: ${level} developers.
+Focus on:
+- How the pattern is implemented
+- Why this pattern is used
+- Benefits and trade-offs
+- Alternative approaches
+${level === 'beginner' ? 'Use simple explanations with examples.' : ''}
+${level === 'advanced' ? 'Include implementation details and optimization considerations.' : ''}`;
+        const messages = [
+            { role: 'system', content: systemPrompt },
+            {
+                role: 'user',
+                content: `Analyze the ${patternName} pattern in this ${language} code:\n\`\`\`${language}\n${code}\n\`\`\`\n\nExplain for ${level} level.`
+            }
+        ];
+        return await this.aiService.chatWithGroq(messages);
+    }
+    buildExplanationPrompt(language, level, options) {
+        let prompt = `You are an expert ${language} developer and teacher. Explain the provided code for a ${level} developer.`;
+        switch (level) {
+            case 'beginner':
+                prompt += `\n- Use simple, clear language
+- Explain basic concepts and terminology
+- Break down complex parts step by step
+- Include analogies when helpful
+- Avoid jargon or explain it when necessary`;
+                break;
+            case 'intermediate':
+                prompt += `\n- Assume familiarity with basic concepts
+- Focus on patterns, architecture, and design decisions
+- Explain the reasoning behind code structure
+- Highlight best practices and potential improvements`;
+                break;
+            case 'advanced':
+                prompt += `\n- Focus on advanced patterns and optimizations
+- Discuss architectural implications
+- Analyze performance considerations
+- Explain trade-offs and alternative approaches
+- Include implementation details and edge cases`;
+                break;
+        }
+        if (options.focusAreas && options.focusAreas.length > 0) {
+            prompt += `\n\nFocus specifically on these areas: ${options.focusAreas.join(', ')}`;
+        }
+        if (options.includeFlowDiagram) {
+            prompt += `\n- Include a text-based flow diagram showing the execution flow`;
+        }
+        if (options.includeExamples) {
+            prompt += `\n- Provide practical examples of how this code would be used`;
+        }
+        const formatInstructions = this.getFormatInstructions(options.outputFormat);
+        if (formatInstructions) {
+            prompt += `\n\n${formatInstructions}`;
+        }
+        return prompt;
+    }
+    buildExplanationUserPrompt(code, language, level, options) {
+        let prompt = `Explain this ${language} code:\n\`\`\`${language}\n${code}\n\`\`\``;
+        prompt += `\n\nTarget audience: ${level} developers`;
+        if (options.focusAreas && options.focusAreas.length > 0) {
+            prompt += `\nFocus on: ${options.focusAreas.join(', ')}`;
+        }
+        return prompt;
+    }
+    getFormatInstructions(format) {
+        switch (format) {
+            case 'markdown':
+                return 'Format the response using Markdown with proper headings, code blocks, and emphasis.';
+            case 'html':
+                return 'Format the response using HTML with proper semantic tags and code highlighting.';
+            case 'plain':
+                return 'Use plain text format without special formatting.';
+            default:
+                return null;
+        }
     }
     validateLanguage(language) {
         if (!this.supportedLanguages.has(language.toLowerCase())) {

@@ -33,7 +33,7 @@ export interface SecurityIssue {
     suggestion: string;
 }
 export interface CodeSuggestion {
-    type: 'completion' | 'improvement' | 'optimization';
+    type: 'completion' | 'improvement' | 'optimization' | 'explanation';
     content: string;
     explanation: string;
 }

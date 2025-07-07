@@ -20,6 +20,12 @@ export interface CodeGenerationOptions {
     codeStyle?: 'minimal' | 'verbose' | 'enterprise';
     maxTokens?: number;
 }
+export interface CodeExplanationOptions {
+    includeFlowDiagram?: boolean;
+    includeExamples?: boolean;
+    focusAreas?: string[];
+    outputFormat?: 'html' | 'markdown' | 'plain';
+}
 export declare class CodingAgent {
     private aiService;
     private cache;
@@ -30,7 +36,12 @@ export declare class CodingAgent {
     optimizeCode(code: string, language: string, targetMetric?: 'speed' | 'memory' | 'readability' | 'maintainability'): Promise<CodeSuggestion>;
     analyzeCode(code: string, language: string): Promise<CodeAnalysis>;
     generateTests(code: string, language: string, testFramework?: string): Promise<CodeSuggestion>;
-    explainCode(code: string, language: string, level?: 'beginner' | 'intermediate' | 'advanced'): Promise<string>;
+    explainCode(code: string, language: string, level?: 'beginner' | 'intermediate' | 'advanced', options?: CodeExplanationOptions): Promise<string>;
+    explainCodeSection(code: string, language: string, startLine: number, endLine: number, level?: 'beginner' | 'intermediate' | 'advanced'): Promise<string>;
+    explainCodePattern(code: string, language: string, patternName: string, level?: 'beginner' | 'intermediate' | 'advanced'): Promise<string>;
+    private buildExplanationPrompt;
+    private buildExplanationUserPrompt;
+    private getFormatInstructions;
     private validateLanguage;
     private buildSystemPrompt;
     private formatContext;

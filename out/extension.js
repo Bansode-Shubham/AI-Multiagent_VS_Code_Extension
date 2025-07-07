@@ -307,22 +307,29 @@ function activate(context) {
     );
     // Generate Code Command
     const generateCodeCommand = vscode.commands.registerCommand('multiAgentAI.generateCode', async () => {
+        console.log('🔥 Generate code command started');
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
+            console.log('❌ No active editor');
             vscode.window.showErrorMessage('No active editor');
             return;
         }
+        console.log('✅ Editor found');
         const selection = editor.selection;
         const selectedText = editor.document.getText(selection);
         const language = editor.document.languageId;
         const context = editor.document.getText();
+        console.log('📝 Selection:', selectedText.length, 'chars');
+        console.log('🔤 Language:', language);
         try {
+            console.log('🤖 Calling AI service...');
             vscode.window.withProgress({
                 location: vscode.ProgressLocation.Notification,
                 title: "Generating code...",
                 cancellable: false
             }, async () => {
                 const suggestion = await codingAgent.generateCodeCompletion(selectedText, language, context);
+                console.log('✨ Got suggestion:', suggestion);
                 const action = await vscode.window.showInformationMessage('Code suggestion generated', 'Apply', 'View', 'Improve');
                 if (action === 'Apply') {
                     editor.edit(editBuilder => {
@@ -341,6 +348,7 @@ function activate(context) {
             });
         }
         catch (error) {
+            console.error('💥 Error:', error);
             vscode.window.showErrorMessage(`Error generating code: ${error}`);
         }
     });
@@ -385,6 +393,7 @@ function activate(context) {
     });
     // Generate Documentation Command
     const generateDocsCommand = vscode.commands.registerCommand('multiAgentAI.generateDocs', async () => {
+        console.log('Generate code command triggered'); // Add this
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage('No active editor');
@@ -438,6 +447,7 @@ function activate(context) {
     statusBarItem.command = 'multiAgentAI.openPanel';
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
+    console.log('Multi-Agent AI extension activated');
 }
 exports.activate = activate;
 //# sourceMappingURL=extension.js.map

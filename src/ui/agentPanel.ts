@@ -2628,12 +2628,6 @@ export class AgentPanel {
     
     try {
       switch (command) {
-        case 'refresh':
-          await this.refreshAgent(agent);
-          break;
-        case 'clear':
-          this.clearAgent(agent);
-          break;
         case 'export':
           await this.exportContent(agent, message.content || '');
           break;
@@ -2691,18 +2685,7 @@ export class AgentPanel {
     }
   }
 
-  private async refreshAgent(agent: string) {
-    try {
-      await vscode.commands.executeCommand(`multiAgentAI.refresh.${agent}`);
-    } catch (error) {
-      vscode.window.showErrorMessage(`Failed to refresh ${agent}: ${error}`);
-    }
-  }
-
-  private clearAgent(agent: string) {
-    this.updateContent(agent, '', 'info');
-    this.updateBadge(agent, 0);
-  }
+  
 
   private async exportContent(agent: string, content: string) {
     if (!content.trim()) {
@@ -2764,8 +2747,6 @@ export class AgentPanel {
               </div>
             </div>
             <div class="agent-controls">
-              <button class="btn" onclick="clearAgent('${id}')">Clear</button>
-              <button class="btn" onclick="refreshAgent('${id}')">Refresh</button>
               <button class="btn" onclick="exportContent('${id}')">Export</button>
             </div>
           </div>
@@ -2801,10 +2782,7 @@ export class AgentPanel {
       <body>
         <div class="header">
           <h1>Multi-Agent AI Assistant</h1>
-          <div class="header-controls">
-            <button class="btn" onclick="clearAll()">Clear All</button>
-            <button class="btn primary" onclick="refreshAll()">Refresh All</button>
-          </div>
+
         </div>
         
         <div class="agent-tabs">
@@ -3166,14 +3144,9 @@ export class AgentPanel {
         document.querySelector(\`[onclick="switchTab('\${agent}')"]\`).classList.add('active');
       }
 
-      function refreshAgent(agent) {
-        showProgress(agent, 0, 'Starting...');
-        vscode.postMessage({ command: 'refresh', agent });
-      }
+     
 
-      function clearAgent(agent) {
-        vscode.postMessage({ command: 'clear', agent });
-      }
+     
 
       function exportContent(agent) {
         const outputEl = document.getElementById(agent + '-output');
@@ -3181,17 +3154,7 @@ export class AgentPanel {
         vscode.postMessage({ command: 'export', agent, content });
       }
 
-      function clearAll() {
-        ['coding', 'security', 'documentation'].forEach(agent => {
-          clearAgent(agent);
-        });
-      }
-
-      function refreshAll() {
-        ['coding', 'security', 'documentation'].forEach(agent => {
-          refreshAgent(agent);
-        });
-      }
+      
 
       function showProgress(agent, progress, status) {
         const progressContainer = document.getElementById(agent + '-progress');
